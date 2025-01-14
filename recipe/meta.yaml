@@ -6,11 +6,11 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/asr-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/asr-{{ version }}.tar.gz
   sha256: 4fec71291eab856d006df3b54cb21a92d2e418d78d597d243fd5d8dafebb056c
 
 build:
-  number: 0
+  number: 1
   noarch: python
   entry_points:
     - asr=asr.core.cli:cli
@@ -19,7 +19,7 @@ build:
 requirements:
   host:
     - pip
-    - python >=3.5
+    - python {{ python_min }}
   run:
     - ase
     - click >=7.0
@@ -28,7 +28,7 @@ requirements:
     - phonopy
     - plotly
     - pymatgen
-    - python >=3.5
+    - python >={{ python_min }}
     - spglib
 
 test:
@@ -40,6 +40,7 @@ test:
     - asr --help
   requires:
     - pip
+    - python {{ python_min }}
 
 about:
   home: https://asr.readthedocs.io/
