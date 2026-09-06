@@ -1,0 +1,67 @@
+schema_version: 1
+
+context:
+  name: asr
+  version: "0.4.1"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/asr-${{ version }}.tar.gz
+  sha256: 4fec71291eab856d006df3b54cb21a92d2e418d78d597d243fd5d8dafebb056c
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+  python:
+    entry_points:
+      - asr=asr.core.cli:cli
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - ase
+    - click >=7.0
+    - flask
+    - matplotlib-base
+    - phonopy
+    - plotly
+    - pymatgen
+    - python >=${{ python_min }}
+    - spglib
+
+tests:
+  - python:
+      imports:
+        - asr
+        - asr.calculators
+      pip_check: true
+      python_version:
+        - ${{ python_min }}
+        - "*"
+  - requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+    script:
+      - asr --help
+
+about:
+  license: GPL-3.0-or-later
+  license_file: LICENSE
+  summary: Atomic Simulation Recipes
+  description: |
+    Recipes for calculating material properties
+  homepage: https://asr.readthedocs.io/
+  repository: https://gitlab.com/asr-dev/asr
+  documentation: https://asr.readthedocs.io/
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
